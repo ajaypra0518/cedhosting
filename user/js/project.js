@@ -5,6 +5,7 @@
     var mobile = $('#mobile').val();
 
     var validateMobNum = /^\d*(?:\.\d{1,2})?$/;
+    // /^(0)?[1-9]{1}[0-9]{9}$/
     if (validateMobNum.test(mobile) && mobile.length == 10 && mobile != "") {
 
       $.ajax({

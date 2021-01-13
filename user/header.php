@@ -1,3 +1,12 @@
+<?php 
+$conn=mysqli_connect('localhost','root','','cedhosting');
+$query= "select * from tbl_product where prod_parent_id=1";
+$result=mysqli_query($conn,$query);
+// include_once "../classess.php";
+// $obj=new ProductTable();
+
+
+ ?>
 <div class="header">
 			<div class="container">
 				<nav class="navbar navbar-default">
@@ -25,13 +34,19 @@
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hosting<i class="caret"></i></a>
 									<ul class="dropdown-menu">
-										<li><a href="cmshosting.html">CMS Hosting</a></li>
-										<li><a href="wordpresshosting.html">WordPress Hosting</a></li>
-										<li><a href="machosting.html">Mac Hosting</a></li>
-										<li><a href="windowshosting.html">Windows Hosting</a></li>
-										<li><a href="linuxhosting.html">Linux hosting</a></li>
-										<li><a href="unixhosting.html">Unix 1.0</a></li>
-										
+										<!-- <li><a href="cmshosting.php">CMS Hosting</a></li>
+										<li><a href="wordpresshosting.php">WordPress Hosting</a></li>
+										<li><a href="machosting.php">Mac Hosting</a></li>
+										<li><a href="windowshosting.php">Windows Hosting</a></li>
+										<li><a href="linuxhosting.php">Linux hosting</a></li>
+										<li><a href="unixhosting.">Unix 1.0</a></li> -->
+										<?php
+										while($row=mysqli_fetch_assoc($result)){											
+									
+										?>
+										<li><a href="<?php echo $row['link']; ?>"><?php echo $row['prod_name']; ?></a></li>
+									<?php } ?>
+									
 									</ul>			
 								</li>
 								<li><a href="pricing.php">Pricing</a></li>

@@ -1,10 +1,6 @@
-<!--
-A
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+<?php 
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -101,6 +97,9 @@ input[type=number] {
 #answershow{
     display:none;
 }
+#signstatus{
+    color:red;
+}
 
 
 	
@@ -115,15 +114,18 @@ input[type=number] {
         
 
        <?php
-       if(isset($_POST['signup'])){
-           $name=trim($_POST['name']);
-           $email=trim($_POST['email']);
-           $password=md5(trim($_POST['password']));  
-           $dropdown=trim($_POST['dropdown']);
-           $answer=trim($_POST['answer']);
+      
+       if(isset($_POST['verifymob'])){
+           $_SESSION['mobile']=trim($_POST['mobile']);
           
-
        }
+       if(isset($_GET['id'])){
+           $x=$_GET['id'];
+        
+    }
+
+       
+
        ?>
 
 		<!---login--->
@@ -134,7 +136,7 @@ input[type=number] {
 
 		   <div class="row">
       <div class="col-xl-5 col-lg-5 col-md-7 col-sm-8 col-xs-12 mx-auto">
-        <form class="form1 pb-3 pt-0 px-4 my-4" id="signform" onsubmit="return funValidate()" method="POST">
+        <form class="form1 pb-3 pt-0 px-4 my-4" id="signform" onsubmit="return funValidate()" method="POST" action="signup_in_database.php">
      
           <div class="form-group mt-4 mb-0">
             <label> Name:</label>
@@ -179,7 +181,21 @@ input[type=number] {
           </div>
           <p id="cnfrmpass_error"></p>
 
-          <p id="signstatus" class="mb-1"></p>
+          <p id="signstatus" class="mb-1">
+              <?php
+            if(isset($_GET['id'])){
+                        if($x==1){
+                            echo "User Already Exists Go and Log In";
+                        }
+                        else if($x==2){
+                            echo "<span style='color:green;'>You Have Signup Successfully</span>";
+                        }
+                        else if($x==3){
+                            echo "Signup Failed Try After Sometime";
+                        }
+                    }
+              ?>
+          </p>
           <div style="margin-top:20px; margin-bottom:50px;">
           <button  class="btn btncol btn-block" name="signup" id="signup" >Click Here For Signup</button>
           </div>
