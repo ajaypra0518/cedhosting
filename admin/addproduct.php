@@ -5,10 +5,30 @@ include_once "header.php";
 include_once "../classess.php";
 $obj=new ProductTable();
 
-// if(isset($_POST['submit'])){
-// extract($_POST);
 
-// }
+
+
+
+
+
+  
+
+if(isset($_POST['submit'])){
+extract($_POST);
+$description=json_encode(array('webspace'=>$webspace,'bandwidth'=>$bandwidth,'freedomain'=>$freedomain,'languagetechnology'=>$languagetechnology,'mailbox'=>$mailbox));
+$retValue=$obj->addProduct($productcategory,$productname,$pageurl,$monthlyprice,$annualprice,$sku,$description);
+
+if($retValue==1){
+ 
+  echo "<script>alert('Product Added Succecfully')</script>";
+  echo "<script>window.location.href='addproduct.php'</script>";
+}
+else{
+ 
+  echo "<script>alert('Product Addition Failed')</script>";
+  echo "<script>window.location.href='addproduct.php'</script>";
+}
+}
 
 
 ?>

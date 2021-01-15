@@ -1,20 +1,10 @@
-<!--
-=========================================================
-* Argon Dashboard - v1.2.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
 
-
-* Copyright  Creative Tim (http://www.creative-tim.com)
-* Coded by www.creative-tim.com
-
-
-
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <?php
 require_once "header.php";
+include_once "../classess.php";
+$obj=new ProductTable();
+$data=$obj->getProductData();
+// print_r($data);
 
 ?>
   <!-- Main content -->
@@ -259,7 +249,7 @@ require_once "header.php";
                     src="assets/img/theme/user-avatar.png">
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">Hello, <?php echo(isset($_SESSION['admin'])) ? $_SESSION['admin'][2]: "Admin" ?></span>
+                    <span class="mb-0 text-sm  font-weight-bold">Hello, Admin</span>
                   </div>
                 </div>
               </a>
@@ -352,15 +342,90 @@ require_once "header.php";
                         <th>Free Domain</th>
                         <th>Language Technology</th>
                         <th>MailBox</th>
-                        <th>Action</th>
+                        <th>Delete</th>
+                        <th>Update</th>
+                      
                     </tr>
                 </thead>
+
+                <tbody>
+                <?php if ($data!=false) {
+                        for ($i=0;$i<count($data);$i++) { ?>
+                        <tr>
+                        <td><?php echo $data[$i]['prod_parent_name']?></td>
+                        <td><?php echo $data[$i]['prod_name'];?></td>
+                        <td><?php echo $data[$i]['link']; ?></td>
+                        <td><?php if($data[$i]['prod_available']==1) echo "Available";?></td>
+                        <td><?php echo $data[$i]['prod_launch_date'];?></td>
+                        <td><?php echo $data[$i]['mon_price'];?></td>
+                        <td><?php echo $data[$i]['annual_price'];?></td>
+                        <td><?php echo $data[$i]['sku'];?></td>
+                        <td><?php echo $data[$i]['webspace'];?></td>
+                        <td><?php echo $data[$i]['bandwidth'];?></td>
+                        <td><?php echo $data[$i]['freedomain'];?></td>
+                        <td><?php echo $data[$i]['languagetechnology'];?></td>
+                        <td><?php echo $data[$i]['mailbox'];?></td>
+                        
+                        <td><a style="text-decoration: none; text-style: none;" class=" btn-danger"
+                        href="viewproducts.php?delete=<?php echo $data[$i]['prod_id'];?>"><button type="button" class="btn btn-danger"
+                        name="d1" style="font-size:10px;"
+                          onclick="return confirm('Are you sure you want to delete data from the database?')">Delete</button></a>
+                        </td>
+                        <td><a style="text-decoration: none; text-style: none;" class=" btn-danger"
+                          href="viewproducts.php?upd=<?php echo $data[$i]['prod_id'];?>"><button type="button" class="btn btn-success"  style="font-size:10px;"
+                          name="d1"
+                        >Update</button></a>
+                          </td>
+                        </tr>
+              <?php     }
+                    }?>
+    
+              </tbody>
+
+
+
+
               </table>
             </div>
           </div>
         </div>
       </div>
 <!-- table display -->
+
+
+
+<?php 
+// if(isset($_POST['updatecategory'])){
+//    print_r($_POST);
+//  $productname=$_POST['productname_update'];
+//  $link=$_POST['productlink_update'];
+//  $availabilty=$_POST['availability_update'];
+//  $upadteId=$_POST['upadte_id'];
+
+//   $backresult=$obj->ProductUpdate($productname,$link,$availabilty,$upadteId);
+//   // echo $backresult;
+//   if($backresult==1){
+//     echo "<script>alert('Upadted SuccesFully')</script>";
+//     echo "<script>window.location.href='createcategory.php'</script>";
+//   }
+// }
+
+
+if(isset($_GET['upd'])){
+  $update=$_GET['upd'];
+  echo $update;
+  $data3=$obj->updateAddProduct($update);
+  print_r($data3);
+  if(!isset($_POST['updatecategory'])){
+  echo "<script>$(document).ready(function(){ $('#exampleModalSignUp').modal('show'); });</script>";
+  }
+}
+
+
+
+  ?>
+
+
 
 <div class="col-md-12">
     <!-- Modal -->
@@ -383,6 +448,7 @@ require_once "header.php";
                     </div>
                   </div>
                 </div>
+                <form action="" method="POST">
                 <div class="pl-lg-4">
                   <div class="row pr-3">
                     <div class="form-group col-lg-6">
@@ -392,14 +458,14 @@ require_once "header.php";
                       name="productcategory">
                         <option value="Please select">Please select</option>
                         <?php
-/*                        $data=$product->getSubCategoryNav();
-                        if ($data!=false) {
-                            for ($i=0;$i<count($data);$i++) {
-                                echo '<option value="'.$data[$i]['id'].'">'.
-                                $data[$i]['prod_name'].'</option>';
+                  
+                        $data2=$obj->getSubCategory();
+                        if ($data2!=false) {
+                            for ($i=0;$i<count($data2);$i++) {
+                                echo '<option value="'.$data2[$i]['id'].'">'.$data2[$i]['prod_name'].'</option>';
                             }
                         }
-                        */?>
+                       ?>
                       </select>
                       <div class="invalid-feedback">
                         Please Select a Product Category.
@@ -572,174 +638,28 @@ require_once "header.php";
             <button type="button" 
             class="btn btn-danger mt-4" data-dismiss="modal">Close</button>
               <input type="submit" class="btn btn-primary mt-4" 
-              id="createcategory" value="Update Product" name="submit" disabled="">
+              id="createcategory" value="Update Product" name="updateproduct" disabled="">
             </div>
-          </form>
+          
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!--j query-->
-  <!-- <script>
-  $( document ).ready(function() {
-    $("#createcategory").prop('disabled', false);
-  });
-  $('#updatecategory').click(function(){
-    var productname=($('#productname-update').val()).trim();
-    var link=($('#link-update').val()).trim();
-    var availability=$('#availability-update').val();
-    var categoryid=$('#category-id-update').val();
-    if (availability=="Choose..." || productname=="") {
-      alert('please fill product name and availibility');
-    }
-    else if(!isNaN(productname)){
-      alert('product name can not be all numbers');
-    }
-    else {
-      $.ajax({
-        url: "handlerequest.php",
-        method: "post",
-        data: {
-          productname: productname,
-          link: link,
-          availability: availability,
-          id: categoryid,
-          updatecategory: true
-        },
-        success: function(msg){
-          if (msg){
-            alert("Category Successfully Updated");
-            location.reload();
-          }
-          else {
-            alert("failed updation");
-          }
-         
-        },
-        error: function(){
-          alert('Update Failed');
-        }
-      });
-    }
-  });
-    $('#createcategory').click(function(){
-      var id=($('#id').val()).trim();
-      var productcategory=($('#inputState').val()).trim();
-      var productname=($('#productname').val()).trim();
-      var pageurl=($('#pageurl').val()).trim();
-      var monthlyprice=($('#monthlyprice').val()).trim();
-      var annualprice=($('#annualprice').val()).trim();
-      var sku=($('#sku').val()).trim();
-      var webspace=($('#webspace').val()).trim();
-      var bandwidth=($('#bandwidth').val()).trim();
-      var freedomain=($('#freedomain').val()).trim();
-      var languagetechnology=($('#languagetechnology').val()).trim();
-      languagetechnology=languagetechnology.replace(/,+$/,'');
-      var mailbox=$('#mailbox').val();
-      if (productcategory=="" || productname==""  ||monthlyprice=="" 
-      || annualprice=="" || sku=="" || webspace=="" || bandwidth=="" 
-      || freedomain=="" || languagetechnology=="" || mailbox=="") {
-        alert("please enter product name");
-      }
-      else if (validateAddProduct()==false) {
-        alert('please add monthly price less than annual price');
-      }
-      else {
-        $.ajax({
-          url:'handlerequest.php',
-          method: 'post',
-          data:{
-            id: id,
-            productcategory: productcategory,
-            productname: productname,
-            pageurl: pageurl,
-            monthlyprice: monthlyprice,
-            annualprice: annualprice,
-            sku: sku,
-            webspace: webspace,
-            bandwidth: bandwidth,
-            freedomain: freedomain,
-            languagetechnology: languagetechnology,
-            mailbox: mailbox,
-            pageurl: pageurl,
-            productupdate:true
-          },
-          success:function(msg){
-            alert("Subcategory Updated Successfully");
-            location.reload();
-          },
-          error:function(){
-            alert("error");
-          }
-          
-        });
-      }
-    });
-    $(document).ready(function() {
-      showProduct();
-    });
-    function showProduct(){
-          $('#showProduct').DataTable( {
-              "ajax": "handlerequest.php?showproducts=1"
-          } ); 
-    }
-    $('#showProduct').on('click','#edit-product-by-category',function(){
-      var id=$(this).data('id');
-      var action="edit";
-      manageproductsbycategory(action,id);
-      
-    });
-    $('#showProduct').on('click','#delete-product-by-category',function(){
-      var id=$(this).data('id');
-      var action="delete";
-      var r=confirm("are you sure you want to delete subcategory?");
-      if (r){
-        manageproductsbycategory(action,id);
-      }
-      
-    });
-    function manageproductsbycategory(action,id){
-      $.ajax({
-        url: 'handlerequest.php',
-        method: 'post',
-        data: {
-          id: id,
-          action: action,
-          manageproductsbycategory: true
-        },
-        dataType:'json',
-        success: function(msg){
-          if (msg=="true"){
-            alert('subcategory deleted successfully');
-            location.reload();
-          }
-          else if (msg=="false") {
-            alert("edit failed");
-          }
-          else {
-              $('#id').val(msg['prod_id']);
-              $('#inputState').val(msg['prod_parent_id']).
-              attr("selected", "selected");
-              $('#productname').val(msg['prod_name']);
-              $('#pageurl').val(msg['link']);
-              $('#monthlyprice').val(msg['mon_price']);
-              $('#annualprice').val(msg['annual_price']);
-              $('#sku').val(msg['sku']);
-              $('#webspace').val(msg['webspace']);
-              $('#bandwidth').val(msg['bandwidth']);
-              $('#freedomain').val(msg['freedomain']);
-              $('#languagetechnology').val(msg['languagetechnology']);
-              $('#mailbox').val(msg['mailbox']);
-          }
-        },
-        error: function(){
-          alert("error in deletion");
-        }
-      });
-    }
-    // --------------------------------------------------------------------------
+<script>
+
+// $(document).ready(function(){ $('#exampleModalSignUp').modal('show'); });
+
+$(document).ready( function () {
+  // $('#exampleModalSignUp').modal('show');
+$('#showProduct').DataTable();
+} );
+
+</script>
+
+
+   <script>
     $( document ).ready(function() {
           $("#createcategory").prop('disabled', true);
     });
@@ -929,7 +849,7 @@ require_once "header.php";
         return true;
       }
     }
-  </script> -->
+  </script>
 <?php
 require_once "footer.php";
 ?>

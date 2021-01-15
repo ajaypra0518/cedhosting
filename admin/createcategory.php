@@ -293,6 +293,28 @@ $data=$obj->getSubCategory();
                 }?>
 
   <?php 
+
+if(isset($_POST['updatecategory'])){
+  // print_r($_POST);
+ $productname=$_POST['productname_update'];
+ $link=$_POST['productlink_update'];
+ $availabilty=$_POST['availability_update'];
+ $upadteId=$_POST['upadte_id'];
+
+  $backresult=$obj->ProductUpdate($productname,$link,$availabilty,$upadteId);
+  // echo $backresult;
+  if($backresult==1){
+    echo "<script>alert('Upadted SuccesFully')</script>";
+    echo "<script>window.location.href='createcategory.php'</script>";
+  }
+  else{
+    echo "<script>alert('Not Upadted')</script>";
+    echo "<script>window.location.href='createcategory.php'</script>";
+  }
+  
+}
+
+
   if(isset($_GET['delete'])){
     $delete=$_GET['delete'];
     echo $delete;
@@ -302,12 +324,13 @@ $data=$obj->getSubCategory();
   if(isset($_GET['upd'])){
     $update=$_GET['upd'];
     echo $update;
-    $data1=$obj->UpdateProduct($update);
+    $data1=$obj->updateProduct($update);
     // print_r($data1);
+    if(!isset($_POST['updatecategory'])){
     echo "<script>$(document).ready(function(){ $('#exampleModalSignUp').modal('show'); });</script>";
-   
+    }
   }
-  
+
   ?>              
 
     <!-- Page content -->
@@ -439,24 +462,23 @@ $data=$obj->getSubCategory();
                   <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                
               </div>
               <div class="card-body px-lg-5 py-lg-5">
-                <form role="form">
+                <form method="POST">
                   <div class="form-group mb-3">
                   <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
                     <div class="input-group input-group-alternative">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                       </div>
-                        
+                      <input class="form-control"  type="text"  value="Hosting" readonly >
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="input-group input-group-alternative">
                       <div class="input-group-prepend">
                       </div>
-                      <input class="form-control" type="hidden" id="category-id-update" disabled>
+                      <input class="form-control" type="hidden" value="<?php echo $data1['id']?>" name="upadte_id" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -465,20 +487,29 @@ $data=$obj->getSubCategory();
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                       </div>
-                      <input class="form-control" placeholder="productname" type="text" id="productname-update" value="<?php echo $data1['prod_name']?>">
+                      <input class="form-control" placeholder="productname" type="text" name="productname_update" value="<?php echo $data1['prod_name']?>">
                     </div>
                   </div>
                   <div class="form-group">
+                  <label class="mr-sm-2" for="inlineFormCustomSelect">Link</label>
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="link" type="text" name="productlink_update" value="<?php echo $data1['link']?>">
+                    </div>
+                  </div>
+                  <!-- <div class="form-group">
                   <label class="mr-sm-2" for="inlineFormCustomSelect">Html</label>
                   <div class="input-group input-group-merge input-group-alternative">
                       <div class="input-group-prepend">
                           <textarea class="editor form-group" placeholder="html" id="link-update"></textarea>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-group">
                     <label class="mr-sm-2" for="inlineFormCustomSelect">Availability</label>
-                    <select class="custom-select mr-sm-2" id="availability-update">
+                    <select class="custom-select mr-sm-2"  name="availability_update">
                       <option value="Choose...">Choose...</option>
                       <option value="1">Available</option>
                       <option value="0">Unavailable</option>
@@ -486,7 +517,7 @@ $data=$obj->getSubCategory();
                   </div>
                   <div class="text-center">
                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary my-4" id="updatecategory">Update Category</button>
+                    <button type="submit" class="btn btn-primary my-4" id="updatecategory" name="updatecategory">Update Category</button>
                   </div>
                 </form>
               </div>
@@ -498,9 +529,7 @@ $data=$obj->getSubCategory();
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalSignUp">
-  Launch demo modal
-</button>
+
 
 
 
@@ -513,49 +542,7 @@ $(document).ready( function () {
     $('#showProduct').DataTable();
 } );
 
-  // $('#updatecategory').click(function(){
-  //   var productname=($('#productname-update').val()).trim();
-  //   var link=($('#link-update').val()).trim();
-  //   var availability=$('#availability-update').val();
-  //   var categoryid=$('#category-id-update').val();
-  //   var regproductname=/^(?![0-9]*$)([a-zA-Z]+\s?)*([0-9]+\.?)*$/;
-  //   if (availability=="Choose..." || productname=="") {
-  //     alert('please fill product name and availibility');
-  //   }
-  //   else if (!(productname.match(regproductname))) {
-  //     alert("please enter valid product name");
-  //   }
-  //   else if(!isNaN(productname)){
-  //     alert('product name can not be all numbers');
-  //   }
-  //   else {
-  //     $.ajax({
-  //       url: "handlerequest.php",
-  //       method: "post",
-  //       data: {
-  //         productname: productname,
-  //         link: link,
-  //         availability: availability,
-  //         id: categoryid,
-  //         updatecategory: true
-  //       },
-  //       success: function(msg){
-  //         if (msg){
-  //           alert("Category Successfully Updated");
-  //           location.reload();
-  //         }
-  //         else {
-  //           alert("failed updation");
-  //         }
-         
-  //       },
-  //       error: function(){
-  //         alert('Update Failed');
-  //       }
-  //     });
-  //   }
-  // });
-
+ 
     function insertNewCatogory(){
       var productname=($('#productname').val()).trim();
       var link=($('.link').val()).trim();
@@ -570,66 +557,7 @@ $(document).ready( function () {
     }
    
  
-    // $(document).ready(function() {
-    //   showProduct();
-    // });
-
-
-    // function showProduct(){
-    //       $('#showProduct').DataTable( {
-    //           "ajax": "handlerequest.php?showproduct=1"
-    //       } ); 
-    // }
-    // $('#showProduct').on('click','#edit-product-by-category',function(){
-    //   var id=$(this).data('id');
-    //   var action="edit";
-    //   manageproductbycategory(action,id);
-      
-    // });
-    // $('#showProduct').on('click','#delete-product-by-category',function(){
-    //   var id=$(this).data('id');
-    //   var action="delete";
-    //   var r=confirm("are you sure you want to delete subcategory?");
-    //   if (r){
-    //     manageproductbycategory(action,id);
-    //   }
-      
-    // });
-    // function manageproductbycategory(action,id){
-    //   $.ajax({
-    //     url: 'handlerequest.php',
-    //     method: 'post',
-    //     data: {
-    //       id: id,
-    //       action: action,
-    //       manageproductbycategory: true
-    //     },
-    //     dataType:'json',
-    //     success: function(msg){
-    //       if (msg=="true"){
-    //         alert('subcategory deleted successfully');
-    //         location.reload();
-    //       }
-    //       else if (msg=="false") {
-    //         alert("edit failed");
-    //       }
-    //       else {
-    //         var productname=msg['prod_name'];
-    //         $('#productname-update').val(productname);
-    //         var link=msg['html'];
-    //         $('#link-update').val(link);
-    //         var categoryid=msg['id'];
-    //         $('#category-id-update').val(categoryid);
-    //         var availability=msg['prod_available'];
-    //         $('#availability-update').val(availability).attr('selected','selected');
-
-    //       }
-    //     },
-    //     error: function(){
-    //       alert("error in deletion");
-    //     }
-    //   });
-    // }
+    
   </script> 
 <?php
 include "footer.php";

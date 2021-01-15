@@ -1,49 +1,28 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>Planet Hosting a Hosting Category Flat Bootstrap Responsive Website Template | CMS Hosting :: w3layouts</title>
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Planet Hosting Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<!---fonts-->
-<link href='//fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
-<!---fonts-->
-<!--script-->
-<link rel="stylesheet" href="css/swipebox.css">
-			<script src="js/jquery.swipebox.min.js"></script> 
-			    <script type="text/javascript">
-					jQuery(function($) {
-						$(".swipebox").swipebox();
-					});
-				</script>
-<!--script-->
-</head>
-<body>
+
 <!---header--->
 	
-<?php include "header.php";?>
+<?php include "header.php";
+// error_reporting(0);
+include_once "../classess.php";
+$productTBobj= new ProductTable();
+
+if(isset($_GET['id'])){
+	$id=$_GET['id'];
+	$data=$productTBobj->getAddProduct($id);
+	// echo "<pre>";
+    // print_r($data);
+}
+
+?>
 		
 		<!---header--->
-		<!---singleblog--->
+	
 				<div class="content">
 					<div class="linux-section">
 						<div class="container">
 							<div class="linux-grids">
 								<div class="col-md-8 linux-grid">
-								<h2>CMS Hosting</h2>
+								<h2><?php echo $data[0]['prod_parent_name']; ?></h2>
 								<ul>
 									<li><span>Unlimited </span> domains, email and disk space</li>
 									<li><span>99.9% uptime </span> with dedicated 24/7 technical support</li>
@@ -54,7 +33,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<a href="#">view plans</a>
 								</div>
 								<div class="col-md-4 linux-grid1">
-									<img src="images/cms.png" class="img-responsive" alt=""/>
+									<?php
+									
+									 if($data[0]['prod_parent_id']==2)
+									{
+									echo "<img src='images/linux.png' class='img-responsive' alt=''/>";
+									} else if($data[0]['prod_parent_id']==3)
+									{
+									echo "<img src='images/word.png' class='img-responsive' alt=''/>";
+									} else if($data[0]['prod_parent_id']==4)
+									{
+									echo "<img src='images/cms.png' class='img-responsive' alt=''/>";
+									}else
+									{
+									echo "<img src='images/window.png' class='img-responsive' alt=''/>";
+									}
+									?>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -69,79 +63,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</ul>
 								<div id="myTabContent" class="tab-content">
 									<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
-										<div class="linux-prices">
+										<div class="linux-prices"> 
+										<?php for($i=0;$i<count($data);$i++) {
+													?>
 											<div class="col-md-3 linux-price">
 												<div class="linux-top">
 												<h4>Standard</h4>
-												</div>
+												</div>											
 												<div class="linux-bottom">
-													<h5>$279 <span class="month">per month</span></h5>
+													<h5>$<?php echo $data[$i]['annual_price']?><span class="month">per year</span></h5>
+													<h4>$<?php echo $data[$i]['mon_price'] ?><span class="month">per month</span></h4>
 													<h6>Single Domain</h6>
 													<ul>
-													<li><strong>Unlimited</strong> Disk Space</li>
-													<li><strong>Unlimited</strong> Data Transfer</li>
-													<li><strong>Unlimited</strong> Email Accounts</li>
-													<li><strong>Includes </strong>  Global CDN</li>
-													<li><strong>High Performance</strong>  Servers</li>
-													<li><strong>location</strong> : <img src="images/india.png"></li>
+													<li><strong><?php echo $data[$i]['webspace']?> </strong> Web Space</li>
+													<li><strong><?php echo $data[$i]['bandwidth']?> </strong> Band Width</li>
+													<li><strong><?php echo $data[$i]['mailbox']?> </strong> Mail Box</li>
+													<li><strong><?php echo $data[$i]['freedomain']?> </strong>Free Domain</li>
+													<li><strong><?php echo $data[$i]['languagetechnology']?> </strong> Language/Technology</li>
+													<li><strong> High Performance</strong>  Servers</li>
+													<li><strong>Servers</strong> : <img src="images/india.png"></li>
 													</ul>
 												</div>
 												<a href="#">buy now</a>
 											</div>
-											<div class="col-md-3 linux-price">
-												<div class="linux-top">
-												<h4>Advanced</h4>
-												</div>
-												<div class="linux-bottom">
-													<h5>$279 <span class="month">per month</span></h5>
-													<h6>2 Domain</h6>
-													<ul>
-													<li><strong>Unlimited</strong> Disk Space</li>
-													<li><strong>Unlimited</strong> Data Transfer</li>
-													<li><strong>Unlimited</strong> Email Accounts</li>
-													<li><strong>Includes </strong>  Global CDN</li>
-													<li><strong>High Performance</strong>  Servers</li>
-													<li><strong>location</strong> : <img src="images/india.png"></li>
-													</ul>
-												</div>
-												<a href="#">buy now</a>
-											</div>
-											<div class="col-md-3 linux-price">
-												<div class="linux-top">
-												<h4>Business</h4>
-												</div>
-												<div class="linux-bottom">
-													<h5>$279 <span class="month">per month</span></h5>
-													<h6>3 Domain</h6>
-													<ul>
-													<li><strong>Unlimited</strong> Disk Space</li>
-													<li><strong>Unlimited</strong> Data Transfer</li>
-													<li><strong>Unlimited</strong> Email Accounts</li>
-													<li><strong>Includes </strong>  Global CDN</li>
-													<li><strong>High Performance</strong>  Servers</li>
-													<li><strong>location</strong> : <img src="images/india.png"></li>
-													</ul>
-												</div>
-												<a href="#">buy now</a>
-											</div>
-											<div class="col-md-3 linux-price">
-												<div class="linux-top">
-												<h4>Pro</h4>
-												</div>
-												<div class="linux-bottom">
-													<h5>$259 <span class="month">per month</span></h5>
-													<h6>Unlimited Domains</h6>
-													<ul>
-													<li><strong>Unlimited</strong> Disk Space</li>
-													<li><strong>Unlimited</strong> Data Transfer</li>
-													<li><strong>Unlimited</strong> Email Accounts</li>
-													<li><strong>Includes </strong>  Global CDN</li>
-													<li><strong>High Performance</strong>  Servers</li>
-													<li><strong>location</strong> : <img src="images/india.png"></li>
-													</ul>
-												</div>
-												<a href="#">buy now</a>
-											</div>
+										<?php } ?>
 											<div class="clearfix"></div>
 										</div>
 									</div>
