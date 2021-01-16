@@ -243,6 +243,18 @@ class ProductTable{
 //////////////////////////////////////cat log product data////////////////////////////////////////////////
 
 
+function getCartData($product_id){
+$query="SELECT `tbl_product`.*,`tbl_product_description`.* FROM tbl_product JOIN tbl_product_description ON `tbl_product`.`id` = `tbl_product_description`.`prod_id` WHERE `tbl_product`.`id`='$product_id'";
+$result=mysqli_query($this->con,$query);
+$arr=array();
+while($row=mysqli_fetch_assoc($result))
+{
+    array_push($arr,$row);
+  
+}
+return $arr;
+
+}
 
 }
 

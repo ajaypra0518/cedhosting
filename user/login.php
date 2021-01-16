@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 if(isset($_SESSION['adminlogin'])){
 	echo $_SESSION['adminlogin'];
 	// unset($_SESSION['adminlogin']);

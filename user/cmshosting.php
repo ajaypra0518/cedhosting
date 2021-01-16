@@ -1,8 +1,10 @@
 
 <!---header--->
 	
-<?php include "header.php";
-// error_reporting(0);
+<?php 
+session_start();
+include "header.php";
+error_reporting(0);
 include_once "../classess.php";
 $productTBobj= new ProductTable();
 
@@ -54,6 +56,42 @@ if(isset($_GET['id'])){
 							</div>
 						</div>
 					</div>
+
+
+					    <!-- Button trigger modal -->
+=
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    
+	 <div class="modal-body">
+			<form action="cart.php" method="POST">
+			<input type="text" id="product_id" name="product_id">
+			<select name="plan" id="" class="btn-block">
+			<option value="">Choose Plan</option>
+			<option value="1">Annual Plan</option>
+			<option value="0">Monthly Plan</option>
+			</select>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-primary" name="submit">Add</button>
+			</div>
+			</form>
+		</div>
+			
+			
+     
+    </div>
+  </div>
+</div>
+
 					<div class="tab-prices">
 						<div class="container">
 							<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
@@ -84,7 +122,7 @@ if(isset($_GET['id'])){
 													<li><strong>Servers</strong> : <img src="images/india.png"></li>
 													</ul>
 												</div>
-												<a href="#">buy now</a>
+												<a class="open-homeEvents" data-toggle="modal" data-target="#exampleModal" data-prodid="<?php echo $data[$i]['prod_id'] ?>">Add To Cart</a>
 											</div>
 										<?php } ?>
 											<div class="clearfix"></div>
@@ -235,7 +273,14 @@ if(isset($_GET['id'])){
 		<?php include "footer.php";?>
 		
 		<!---footer--->
-			
+			<script>
+			$(document).on("click", ".open-homeEvents", function () {
+				var eventId = $(this).data('prodid');
+				console.log(eventId)
+				$('#product_id').val(eventId );
+			});
+
+			</script>
 			
 </body>
 </html>
